@@ -31,6 +31,8 @@ public class PastaPage extends BasePage {
     String prices = "(//div[@class='avg-price'])[position()>0 and position()<=3]";
     String value = "value";
     String expectedResult = "Макаронные изделия";
+    String currency = " грн";
+    String emptyString = "";
 
 
     public PastaPage(WebDriver driver) {
@@ -89,10 +91,10 @@ public class PastaPage extends BasePage {
     public void fieldIncorrectValidation(String stringToVerify) {
         minPrice.clear();
         minPrice.sendKeys(stringToVerify);
-        Assert.assertEquals(minPrice.getAttribute(value), "");
+        Assert.assertEquals(minPrice.getAttribute(value), emptyString);
         maxPrice.clear();
         maxPrice.sendKeys(stringToVerify);
-        Assert.assertEquals(maxPrice.getAttribute(value), "");
+        Assert.assertEquals(maxPrice.getAttribute(value), emptyString);
     }
 
     public void fieldCorrectValidation(String stringToVerify) {
@@ -109,9 +111,9 @@ public class PastaPage extends BasePage {
         String firstResultPrice = pricesList.get(0).getText();
         String secondResultPrice = pricesList.get(1).getText();
         String thirdResultPrice = pricesList.get(2).getText();
-        int firstPrice = Integer.parseInt(firstResultPrice.replace(" грн", ""));
-        int secondPrice = Integer.parseInt(secondResultPrice.replace(" грн", ""));
-        int thirdPrice = Integer.parseInt(thirdResultPrice.replace(" грн", ""));
+        int firstPrice = Integer.parseInt(firstResultPrice.replace(currency, emptyString));
+        int secondPrice = Integer.parseInt(secondResultPrice.replace(currency, emptyString));
+        int thirdPrice = Integer.parseInt(thirdResultPrice.replace(currency, emptyString));
 
         if(firstPrice<=secondPrice && secondPrice<=thirdPrice) {
             String correct = "Correct!";
@@ -129,9 +131,9 @@ public class PastaPage extends BasePage {
         String firstResultPrice = pricesList.get(0).getText();
         String secondResultPrice = pricesList.get(1).getText();
         String thirdResultPrice = pricesList.get(2).getText();
-        int firstPrice = Integer.parseInt(firstResultPrice.replace(" грн", ""));
-        int secondPrice = Integer.parseInt(secondResultPrice.replace(" грн", ""));
-        int thirdPrice = Integer.parseInt(thirdResultPrice.replace(" грн", ""));
+        int firstPrice = Integer.parseInt(firstResultPrice.replace(currency, emptyString));
+        int secondPrice = Integer.parseInt(secondResultPrice.replace(currency, emptyString));
+        int thirdPrice = Integer.parseInt(thirdResultPrice.replace(currency, emptyString));
 
         if(firstPrice>=secondPrice && secondPrice>=thirdPrice) {
             String correct = "Correct!";

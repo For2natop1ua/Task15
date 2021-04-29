@@ -1,6 +1,7 @@
 package testClasses;
 
-import org.testng.annotations.*;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 import pageObject.BasePage;
 import pageObject.PastaPage;
 
