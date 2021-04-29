@@ -31,8 +31,8 @@ public class PastaPage extends BasePage {
     String prices = "(//div[@class='avg-price'])[position()>0 and position()<=3]";
     String value = "value";
     String expectedResult = "Макаронные изделия";
-    String currency = " грн";
-    String emptyString = "";
+    static String currency = " грн";
+    static String emptyString = "";
 
 
     public PastaPage(WebDriver driver) {
@@ -89,60 +89,64 @@ public class PastaPage extends BasePage {
     }
 
     public void fieldIncorrectValidation(String stringToVerify) {
-        minPrice.clear();
-        minPrice.sendKeys(stringToVerify);
+        fieldValidation(stringToVerify);
         Assert.assertEquals(minPrice.getAttribute(value), emptyString);
-        maxPrice.clear();
-        maxPrice.sendKeys(stringToVerify);
         Assert.assertEquals(maxPrice.getAttribute(value), emptyString);
     }
 
-    public void fieldCorrectValidation(String stringToVerify) {
+    public void fieldValidation(String stringToVerify){
         minPrice.clear();
         minPrice.sendKeys(stringToVerify);
-        Assert.assertEquals(minPrice.getAttribute(value), stringToVerify);
         maxPrice.clear();
         maxPrice.sendKeys(stringToVerify);
+    }
+
+    public void fieldCorrectValidation(String stringToVerify) {
+        fieldValidation(stringToVerify);
+        Assert.assertEquals(minPrice.getAttribute(value), stringToVerify);
         Assert.assertEquals(maxPrice.getAttribute(value), stringToVerify);
     }
 
     public void getPricesAsc() {
         List<WebElement> pricesList = driver.findElements(By.xpath(prices));
-        String firstResultPrice = pricesList.get(0).getText();
-        String secondResultPrice = pricesList.get(1).getText();
-        String thirdResultPrice = pricesList.get(2).getText();
-        int firstPrice = Integer.parseInt(firstResultPrice.replace(currency, emptyString));
-        int secondPrice = Integer.parseInt(secondResultPrice.replace(currency, emptyString));
-        int thirdPrice = Integer.parseInt(thirdResultPrice.replace(currency, emptyString));
+        int[] arr = integerValues(pricesList);
 
-        if(firstPrice<=secondPrice && secondPrice<=thirdPrice) {
+        if(arr[0]<=arr[1] && arr[1]<=arr[2]) {
             String correct = "Correct!";
-            Assert.assertEquals("Correct!", correct);
+            Assert.assertEquals(correct, "Correct!");
         }
         else {
             String correct = "Incorrect!";
-            Assert.assertEquals("Correct!", correct);
+            Assert.assertEquals(correct, "Correct!");
         }
-
     }
 
     public void getPricesDesc() {
         List<WebElement> pricesList = driver.findElements(By.xpath(prices));
-        String firstResultPrice = pricesList.get(0).getText();
-        String secondResultPrice = pricesList.get(1).getText();
-        String thirdResultPrice = pricesList.get(2).getText();
-        int firstPrice = Integer.parseInt(firstResultPrice.replace(currency, emptyString));
-        int secondPrice = Integer.parseInt(secondResultPrice.replace(currency, emptyString));
-        int thirdPrice = Integer.parseInt(thirdResultPrice.replace(currency, emptyString));
-
-        if(firstPrice>=secondPrice && secondPrice>=thirdPrice) {
+        int[] arr = integerValues(pricesList);
+        if(arr[0]>=arr[1] && arr[1]>=arr[2]) {
             String correct = "Correct!";
-            Assert.assertEquals("Correct!", correct);
+            Assert.assertEquals(correct, "Correct!");
         }
         else {
             String correct = "Incorrect!";
-            Assert.assertEquals("Correct!", correct);
+            Assert.assertEquals(correct, "Correct!");
+        }
+    }
+
+    public static int[] integerValues(List<WebElement> pricesList){
+
+        String[] str = new String[3];
+        int size = str.length;
+        for(int i = 0;i<size;i++){
+            str[i] = pricesList.get(i).getText().replace(currency, emptyString);
         }
 
+        int[] arr = new int [size];
+        for(int i =0; i<size; i++){
+            arr[i] = Integer.parseInt(str[i]);
+        }
+
+        return arr;
     }
 }
