@@ -24,7 +24,7 @@ public class BasePage {
     }
 
     @BeforeMethod(alwaysRun = true)
-    public void verifyList() {
+    public void openTestingPage() {
         HomePage homePage = new HomePage(driver);
         homePage.openPage()
                 .openFoodPage()
